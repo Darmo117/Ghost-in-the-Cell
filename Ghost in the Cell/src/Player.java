@@ -44,8 +44,26 @@ class Player {
           .sorted((q1, q2) -> q2.nb - q1.nb)
           .toArray(Query[]::new);
 
-      for (Query q : demands) {
-        // TODO
+      for (Query d : demands) {
+        for (Query o : offers) {
+          if (o.nb == 0) continue;
+          int toSend = 0;
+          if (o.nb >= d.nb) {
+            toSend = d.nb;
+           o.nb -= toSend;
+           d.nb = 0;
+          }
+          else {
+            toSend = o.nb;
+            o.nb = 0;
+            d.nb -= toSend;
+          }
+          
+          
+            actions.add(move(o.factory.id, d.factory.id, toSend));
+          if (d.nb == 0) break;
+                       
+        }
       }
 
       System.out.println(actions);
